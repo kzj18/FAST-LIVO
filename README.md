@@ -58,11 +58,12 @@ OpenCV>=3.2, Follow [Opencv Installation](http://opencv.org/).
  Sophus Installation for the non-templated/double-only version.
 
 ```bash
-git clone https://github.com/strasdat/Sophus.git
-cd Sophus
-git checkout a621ff
-mkdir build && cd build && cmake ..
-make
+mkdir -p ~/Projects
+git clone git@github.com:kzj18/Sophus.git ~/Projects/Sophus
+cd ~/Projects/Sophus
+git checkout kzj18_fast_livo
+mkdir -p ~/Projects/Sophus/build && cd ~/Projects/Sophus/build && cmake ~/Projects/Sophus
+make -j
 sudo make install
 ```
 
@@ -71,24 +72,45 @@ sudo make install
 Vikit contains camera models, some math and interpolation functions that we need. Vikit is a catkin project, therefore, download it into your catkin workspace source folder.
 
 ```bash
-cd catkin_ws/src
-git clone https://github.com/uzh-rpg/rpg_vikit.git
+mkdir -p ~/Workspace/fast_livo_ws/src && cd ~/Workspace/fast_livo_ws/src && catkin_init_workspace
+git clone git@github.com:kzj18/rpg_vikit.git ~/Workspace/fast_livo_ws/src/rpg_vikit
+git checkout kzj18_fast_livo
 ```
 
-### 2.5 **livox_ros_driver**
+### 2.5 **Livox-SDK**
+
+Follow [Livox-SDK Installation](https://github.com/Livox-SDK/Livox-SDK).
+
+```bash
+git clone git@github.com:Livox-SDK/Livox-SDK.git ~/Projects/Livox-SDK
+mkdir -p ~/Projects/Livox-SDK/build && cd ~/Projects/Livox-SDK/build && cmake ~/Projects/Livox-SDK
+make -j
+sudo make install
+```
+
+### 2.6 **livox_ros_driver**
 
 Follow [livox_ros_driver Installation](https://github.com/Livox-SDK/livox_ros_driver).
+
+```bash
+mkdir -p ~/Workspace/livox_ws/src && cd ~/Workspace/livox_ws/src && catkin_init_workspace
+git clone git@github.com:Livox-SDK/livox_ros_driver.git ~/Workspace/livox_ws/src/livox_ros_driver
+cd ~/Workspace/livox_ws
+catkin_make -DPYTHON_EXECUTABLE=/usr/bin/python3
+echo "source ~/Workspace/livox_ws/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
 
 ## 3. Build
 
 Clone the repository and catkin_make:
 
-```
-cd ~/catkin_ws/src
-git clone https://github.com/hku-mars/FAST-LIVO
-cd ../
-catkin_make
-source ~/catkin_ws/devel/setup.bash
+```bash
+git clone git@github.com:kzj18/FAST-LIVO ~/Workspace/fast_livo_ws/src/FAST-LIVO
+cd ~/Workspace/fast_livo_ws
+catkin_make -DPYTHON_EXECUTABLE=/usr/bin/python3
+echo "source ~/Workspace/nexplore_ws/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
 ```
 
 ## 4. Run the package
@@ -119,7 +141,7 @@ After setting the appropriate topic name and parameters, you can directly run **
 
 Download our collected rosbag files via OneDrive ([FAST-LIVO-Datasets](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/zhengcr_connect_hku_hk/Esiqlmaql0dPreuOhiHlXl4Bqu5RRRIViK1EyuR4h1_n4w?e=fZdVn0)) containing **4** rosbag files.
 
-```
+```bash
 roslaunch fast_livo mapping_avia.launch
 rosbag play YOUR_DOWNLOADED.bag
 ```
@@ -127,12 +149,12 @@ rosbag play YOUR_DOWNLOADED.bag
 ### 4.3 Run on benchmark dataset
 
 NTU-VIRAL
-```
+```bash
 roslaunch fast_livo mapping_avia_ntu.launch
 rosbag play YOUR_DOWNLOADED.bag
 ```
 MARS-LVIG
-```
+```bash
 roslaunch fast_livo mapping_avia_marslvig.launch
 rosbag play YOUR_DOWNLOADED.bag
 ```
